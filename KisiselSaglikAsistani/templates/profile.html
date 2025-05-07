@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Profil - Kişisel Sağlık Asistanı{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="text-center">Profil Bilgileri</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="boy" class="form-label">Boy (cm)</label>
+                            <input type="number" class="form-control" id="boy" name="boy" 
+                                   value="{{ user.profile.boy }}" required min="0" max="300">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="kilo" class="form-label">Kilo (kg)</label>
+                            <input type="number" class="form-control" id="kilo" name="kilo" 
+                                   value="{{ user.profile.kilo }}" required min="0" max="500" step="0.1">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="yas" class="form-label">Yaş</label>
+                            <input type="number" class="form-control" id="yas" name="yas" 
+                                   value="{{ user.profile.yas }}" required min="0" max="150">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="cinsiyet" class="form-label">Cinsiyet</label>
+                            <select class="form-select" id="cinsiyet" name="cinsiyet" required>
+                                <option value="">Seçiniz</option>
+                                <option value="erkek" {% if user.profile.cinsiyet == 'erkek' %}selected{% endif %}>Erkek</option>
+                                <option value="kadın" {% if user.profile.cinsiyet == 'kadın' %}selected{% endif %}>Kadın</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Bilgileri Güncelle</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

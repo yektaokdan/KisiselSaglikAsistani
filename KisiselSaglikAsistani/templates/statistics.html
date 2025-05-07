@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block title %}İstatistikler - Kişisel Sağlık Asistanı{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Su Tüketimi Grafiği</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="waterChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Uyku Süresi Grafiği</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="sleepChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Adım Sayısı Grafiği</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="stepsChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Ruh Hali Dağılımı</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="moodChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function createLineChart(elementId, label, data, color) {
+    const ctx = document.getElementById(elementId).getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: data.map(item => item.date),
+            datasets: [{
+                label: label,
+                data: data.map(item => item.value),
+                borderColor: color,
+                tension: 0.1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+// Su tüketimi grafiği
+createLineChart('waterChart', 'Su Tüketimi (ml)', {{ data.su_tuketimi | tojson }}, 'rgb(54, 162, 235)');
+
+// Uyku süresi grafiği
+createLineChart('sleepChart', 'Uyku Süresi (saat)', {{ data.uyku_suresi | tojson }}, 'rgb(153, 102, 255)');
+
+// Adım sayısı grafiği
+createLineChart('stepsChart', 'Adım Sayısı', {{ data.adim_sayisi | tojson }}, 'rgb(75, 192, 192)');
+
+// Ruh hali dağılımı
+const moodCtx = document.getElementById('moodChart').getContext('2d');
+const moodData = {{ data.ruh_hali | tojson }};
+const moodCounts = {
+    'çok_iyi': 0,
+    'iyi': 0,
+    'normal': 0,
+    'kötü': 0,
+    'çok_kötü': 0
+};
+
+moodData.forEach(item => {
+    moodCounts[item.value]++;
+});
+
+new Chart(moodCtx, {
+    type: 'pie',
+    data: {
+        labels: ['Çok İyi', 'İyi', 'Normal', 'Kötü', 'Çok Kötü'],
+        datasets: [{
+            data: Object.values(moodCounts),
+            backgroundColor: [
+                'rgb(75, 192, 192)',
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)',
+                'rgb(255, 159, 64)',
+                'rgb(255, 99, 132)'
+            ]
+        }]
+    },
+    options: {
+        responsive: true
+    }
+});
+</script>
+{% endblock %} 

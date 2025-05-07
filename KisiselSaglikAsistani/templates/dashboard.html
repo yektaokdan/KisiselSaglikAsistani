@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Kişisel Sağlık Asistanı{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="mb-4">Hoş Geldin, {{ session.username }}!</h2>
+        </div>
+    </div>
+
+    <!-- Hızlı İstatistikler -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4>Su Tüketimi</h4>
+                    <i class="fas fa-tint fa-2x text-primary"></i>
+                </div>
+                {% if user.health_data.su_tuketimi %}
+                <div class="stat-value">{{ user.health_data.su_tuketimi[-1].value }}ml</div>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: {{ (user.health_data.su_tuketimi[-1].value/2000*100)|round }}%" aria-valuenow="{{ user.health_data.su_tuketimi[-1].value }}" aria-valuemin="0" aria-valuemax="2000"></div>
+                </div>
+                <small class="text-muted">Günlük hedef: 2000ml</small>
+                {% else %}
+                <div class="text-muted">Veri girilmemiş</div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4>Uyku</h4>
+                    <i class="fas fa-bed fa-2x text-primary"></i>
+                </div>
+                {% if user.health_data.uyku_suresi %}
+                <div class="stat-value">{{ user.health_data.uyku_suresi[-1].value }}sa</div>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: {{ (user.health_data.uyku_suresi[-1].value/8*100)|round }}%" aria-valuenow="{{ user.health_data.uyku_suresi[-1].value }}" aria-valuemin="0" aria-valuemax="8"></div>
+                </div>
+                <small class="text-muted">Günlük hedef: 8 saat</small>
+                {% else %}
+                <div class="text-muted">Veri girilmemiş</div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4>Adım</h4>
+                    <i class="fas fa-walking fa-2x text-primary"></i>
+                </div>
+                {% if user.health_data.adim_sayisi %}
+                <div class="stat-value">{{ user.health_data.adim_sayisi[-1].value }}</div>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: {{ (user.health_data.adim_sayisi[-1].value/10000*100)|round }}%" aria-valuenow="{{ user.health_data.adim_sayisi[-1].value }}" aria-valuemin="0" aria-valuemax="10000"></div>
+                </div>
+                <small class="text-muted">Günlük hedef: 10,000 adım</small>
+                {% else %}
+                <div class="text-muted">Veri girilmemiş</div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4>Ruh Hali</h4>
+                    <i class="fas fa-smile fa-2x text-primary"></i>
+                </div>
+                {% if user.health_data.ruh_hali %}
+                <div class="stat-value">
+                    {% if user.health_data.ruh_hali[-1].value == 'çok_iyi' %}
+                    😊 Çok İyi
+                    {% elif user.health_data.ruh_hali[-1].value == 'iyi' %}
+                    🙂 İyi
+                    {% elif user.health_data.ruh_hali[-1].value == 'normal' %}
+                    😐 Normal
+                    {% elif user.health_data.ruh_hali[-1].value == 'kötü' %}
+                    🙁 Kötü
+                    {% else %}
+                    😞 Çok Kötü
+                    {% endif %}
+                </div>
+                {% else %}
+                <div class="text-muted">Veri girilmemiş</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Hızlı Eylemler -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Hızlı Eylemler</h4>
+                    <div class="d-flex gap-3">
+                        <a href="{{ url_for('daily_health') }}" class="btn btn-primary">
+                            <i class="fas fa-plus-circle me-2"></i>Günlük Veri Gir
+                        </a>
+                        <a href="{{ url_for('calculate_bmi') }}" class="btn btn-outline-primary">
+                            <i class="fas fa-calculator me-2"></i>BMI Hesapla
+                        </a>
+                        <a href="{{ url_for('recommendations') }}" class="btn btn-outline-primary">
+                            <i class="fas fa-lightbulb me-2"></i>Önerileri Gör
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Son Öneriler -->
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Son Öneriler</h4>
+                    <div class="list-group">
+                        {% if recommendations %}
+                            {% for recommendation in recommendations %}
+                            <div class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between align-items-center">
+                                    <p class="mb-0"><i class="fas fa-info-circle me-2 text-primary"></i>{{ recommendation }}</p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="text-muted">Henüz öneri bulunmuyor.</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Profil Bilgileri</h4>
+                    <div class="list-group">
+                        <div class="list-group-item">
+                            <small class="text-muted">Boy</small>
+                            <div class="fw-bold">{{ user.profile.boy }} cm</div>
+                        </div>
+                        <div class="list-group-item">
+                            <small class="text-muted">Kilo</small>
+                            <div class="fw-bold">{{ user.profile.kilo }} kg</div>
+                        </div>
+                        <div class="list-group-item">
+                            <small class="text-muted">Yaş</small>
+                            <div class="fw-bold">{{ user.profile.yas }}</div>
+                        </div>
+                        <div class="list-group-item">
+                            <small class="text-muted">Cinsiyet</small>
+                            <div class="fw-bold">{{ user.profile.cinsiyet|title }}</div>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <a href="{{ url_for('profile') }}" class="btn btn-outline-primary btn-sm w-100">
+                            <i class="fas fa-edit me-2"></i>Profili Düzenle
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

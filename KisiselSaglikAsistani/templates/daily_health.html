@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Günlük Sağlık Takibi - Kişisel Sağlık Asistanı{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="text-center">Günlük Sağlık Verileri</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="su_tuketimi" class="form-label">Su Tüketimi (ml)</label>
+                            <input type="number" class="form-control" id="su_tuketimi" name="su_tuketimi" 
+                                   required min="0" max="10000" placeholder="Örn: 2000">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="uyku_suresi" class="form-label">Uyku Süresi (saat)</label>
+                            <input type="number" class="form-control" id="uyku_suresi" name="uyku_suresi" 
+                                   required min="0" max="24" step="0.5" placeholder="Örn: 7.5">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="adim_sayisi" class="form-label">Adım Sayısı</label>
+                            <input type="number" class="form-control" id="adim_sayisi" name="adim_sayisi" 
+                                   required min="0" max="100000" placeholder="Örn: 10000">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="ruh_hali" class="form-label">Ruh Hali</label>
+                            <select class="form-select" id="ruh_hali" name="ruh_hali" required>
+                                <option value="">Seçiniz</option>
+                                <option value="çok_iyi">Çok İyi</option>
+                                <option value="iyi">İyi</option>
+                                <option value="normal">Normal</option>
+                                <option value="kötü">Kötü</option>
+                                <option value="çok_kötü">Çok Kötü</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Verileri Kaydet</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
