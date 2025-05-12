@@ -64,7 +64,7 @@
                     <h3 class="card-title h4 mb-3">Kişisel Öneriler</h3>
                     <p class="card-text text-muted">Verilerinize göre özelleştirilmiş sağlık önerileri ve yaşam tarzı tavsiyeleri alın.</p>
                     {% if session.username %}
-                    <a href="{{ url_for('recommendations') }}" class="btn btn-outline-primary mt-3">Önerileri Gör</a>
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary mt-3">Önerileri Gör</a>
                     {% endif %}
                 </div>
             </div>

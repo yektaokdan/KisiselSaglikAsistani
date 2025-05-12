@@ -19,9 +19,9 @@
                     <i class="fas fa-tint fa-2x text-primary"></i>
                 </div>
                 {% if user.health_data.su_tuketimi %}
-                <div class="stat-value">{{ user.health_data.su_tuketimi[-1].value }}ml</div>
+                <div class="stat-value">{{ user.health_data.su_tuketimi }}ml</div>
                 <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width: {{ (user.health_data.su_tuketimi[-1].value/2000*100)|round }}%" aria-valuenow="{{ user.health_data.su_tuketimi[-1].value }}" aria-valuemin="0" aria-valuemax="2000"></div>
+                    <div class="progress-bar" role="progressbar" style="width: {{ (user.health_data.su_tuketimi/2000*100)|round }}%" aria-valuenow="{{ user.health_data.su_tuketimi }}" aria-valuemin="0" aria-valuemax="2000"></div>
                 </div>
                 <small class="text-muted">Günlük hedef: 2000ml</small>
                 {% else %}
@@ -36,9 +36,9 @@
                     <i class="fas fa-bed fa-2x text-primary"></i>
                 </div>
                 {% if user.health_data.uyku_suresi %}
-                <div class="stat-value">{{ user.health_data.uyku_suresi[-1].value }}sa</div>
+                <div class="stat-value">{{ user.health_data.uyku_suresi }}sa</div>
                 <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width: {{ (user.health_data.uyku_suresi[-1].value/8*100)|round }}%" aria-valuenow="{{ user.health_data.uyku_suresi[-1].value }}" aria-valuemin="0" aria-valuemax="8"></div>
+                    <div class="progress-bar" role="progressbar" style="width: {{ (user.health_data.uyku_suresi/8*100)|round }}%" aria-valuenow="{{ user.health_data.uyku_suresi }}" aria-valuemin="0" aria-valuemax="8"></div>
                 </div>
                 <small class="text-muted">Günlük hedef: 8 saat</small>
                 {% else %}
@@ -53,9 +53,9 @@
                     <i class="fas fa-walking fa-2x text-primary"></i>
                 </div>
                 {% if user.health_data.adim_sayisi %}
-                <div class="stat-value">{{ user.health_data.adim_sayisi[-1].value }}</div>
+                <div class="stat-value">{{ user.health_data.adim_sayisi }}</div>
                 <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width: {{ (user.health_data.adim_sayisi[-1].value/10000*100)|round }}%" aria-valuenow="{{ user.health_data.adim_sayisi[-1].value }}" aria-valuemin="0" aria-valuemax="10000"></div>
+                    <div class="progress-bar" role="progressbar" style="width: {{ (user.health_data.adim_sayisi/10000*100)|round }}%" aria-valuenow="{{ user.health_data.adim_sayisi }}" aria-valuemin="0" aria-valuemax="10000"></div>
                 </div>
                 <small class="text-muted">Günlük hedef: 10,000 adım</small>
                 {% else %}
@@ -71,13 +71,13 @@
                 </div>
                 {% if user.health_data.ruh_hali %}
                 <div class="stat-value">
-                    {% if user.health_data.ruh_hali[-1].value == 'çok_iyi' %}
+                    {% if user.health_data.ruh_hali == 'çok_iyi' %}
                     😊 Çok İyi
-                    {% elif user.health_data.ruh_hali[-1].value == 'iyi' %}
+                    {% elif user.health_data.ruh_hali == 'iyi' %}
                     🙂 İyi
-                    {% elif user.health_data.ruh_hali[-1].value == 'normal' %}
+                    {% elif user.health_data.ruh_hali == 'normal' %}
                     😐 Normal
-                    {% elif user.health_data.ruh_hali[-1].value == 'kötü' %}
+                    {% elif user.health_data.ruh_hali == 'kötü' %}
                     🙁 Kötü
                     {% else %}
                     😞 Çok Kötü
@@ -102,9 +102,6 @@
                         </a>
                         <a href="{{ url_for('calculate_bmi') }}" class="btn btn-outline-primary">
                             <i class="fas fa-calculator me-2"></i>BMI Hesapla
-                        </a>
-                        <a href="{{ url_for('recommendations') }}" class="btn btn-outline-primary">
-                            <i class="fas fa-lightbulb me-2"></i>Önerileri Gör
                         </a>
                     </div>
                 </div>
